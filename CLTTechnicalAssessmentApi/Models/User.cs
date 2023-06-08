@@ -1,10 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CLTTechnicalAssessmentApi.Models
 {
+    [Index(nameof(Document), IsUnique = true)]
     public class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+        [Required]
         public long Document { get; set; }
         [Required]
         [MaxLength(100)]
@@ -14,10 +20,8 @@ namespace CLTTechnicalAssessmentApi.Models
         public string Email { get; set; }
         [Required]
         [MaxLength(30)]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
         [Required]
         public DateOnly Birthdate { get; set; }
-
-
     }
 }
