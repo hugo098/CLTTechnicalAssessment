@@ -8,10 +8,11 @@ using System.Net.Mime;
 using System.Text.Json;
 using Utility;
 
-namespace CLTTechnicalAssessmentApi.Controllers
+namespace CLTTechnicalAssessmentApi.Controllers.v1
 {
-    [Route("api/users")]
+    [Route("api/v{version:apiVersion}/users")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class UserController : ControllerBase
     {
         protected APIResponse _response;
@@ -163,8 +164,9 @@ namespace CLTTechnicalAssessmentApi.Controllers
 
                 User model = _mapper.Map<User>(updateDTO);
                 model.Id = id;
+                model.Document = user.Document;
 
-                await _dbUser.UpdateAsync(model);                
+                await _dbUser.UpdateAsync(model);
 
                 _response.BuildResponse(result: _mapper.Map<UserDto>(model), statusCode: HttpStatusCode.OK, isSuccess: true);
                 return Ok(_response);
@@ -185,7 +187,7 @@ namespace CLTTechnicalAssessmentApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIResponse>> DeleteVilla(int id)
+        public async Task<ActionResult<APIResponse>> DeleteUser(int id)
         {
             try
             {
@@ -194,7 +196,7 @@ namespace CLTTechnicalAssessmentApi.Controllers
                     _response.BuildResponse(errors: new List<string>() { "Id must be greater than 0" },
                          statusCode: HttpStatusCode.BadRequest, isSuccess: false);
                     return BadRequest(_response);
-                }   
+                }
                 var user = await _dbUser.GetAsync(u => u.Id == id);
                 if (user == null)
                 {
@@ -206,7 +208,7 @@ namespace CLTTechnicalAssessmentApi.Controllers
 
                 _response.BuildResponse(statusCode: HttpStatusCode.OK, isSuccess: true);
                 return Ok(_response);
-                
+
             }
             catch (Exception ex)
             {

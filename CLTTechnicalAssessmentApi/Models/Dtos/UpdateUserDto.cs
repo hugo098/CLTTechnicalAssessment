@@ -22,6 +22,7 @@ namespace CLTTechnicalAssessmentApi.Models.Dtos
         public string PhoneNumber { get; set; }
         [Required]
         [DataType(DataType.Date)]
+        [RegularExpression(@"\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])*", ErrorMessage = "Date incorrect format. Format must match yyyy-mm-dd")]        
         public string Birthdate { get; set; }
     }
 }
